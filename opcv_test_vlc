@@ -1,15 +1,30 @@
-import subprocess
+import cv2
 
 url = 'rtsp://admin:admin1357@172.16.6.207:554/media/1/1/Profile1'
+cap = cv2.VideoCapture(url)
 
-# vlc 실행 명령어
-vlc_cmd = ['C:\Program Files\VideoLAN\VLC\\vlc.exe', url]
+# 윈도우 창 생성
+cv2.namedWindow("video", cv2.WINDOW_NORMAL)
 
-# vlc 실행
-vlc_process = subprocess.Popen(vlc_cmd)
+# 비디오 해상도 설정
+cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1920)
+cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 1080)
 
-# vlc 종료 시 subprocess도 함께 종료
-try:
-    vlc_process.wait()
-except KeyboardInterrupt:
-    vlc_process.terminate()
+while True:
+    ret, frame = cap.read()
+    if not ret:
+        break
+    
+    # 윈도우 창 출력용
+    cv2.imshow("video", frame)
+    
+    # 창 크기 수동 조절
+    cv2.resizeWindow("video", 1280, 720)
+    
+    # q키 입력 시 종료
+    if cv2.waitKey(1) & 0xFF == ord('q'):
+        break
+
+# 사용한 자원 해제
+cap.release()
+cv2.destroyAllWindows()
