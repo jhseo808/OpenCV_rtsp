@@ -1,0 +1,15 @@
+import subprocess
+
+url = 'rtsp://admin:admin1357@172.16.6.207:554/media/1/1/Profile1'
+
+# vlc 실행 명령어
+vlc_cmd = ['C:\Program Files\VideoLAN\VLC\\vlc.exe', url]
+
+# vlc 실행
+vlc_process = subprocess.Popen(vlc_cmd)
+
+# vlc 종료 시 subprocess도 함께 종료
+try:
+    vlc_process.wait()
+except KeyboardInterrupt:
+    vlc_process.terminate()
